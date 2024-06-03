@@ -34,22 +34,19 @@ class NoteTitle extends StatelessWidget {
 
 class NoteButton extends StatelessWidget {
   final String label;
-  final Function function;
+  final VoidCallback function;
   const NoteButton({super.key, required this.label, required this.function});
 
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
-    final h = MediaQuery.sizeOf(context).height;
     return GestureDetector(
-      onTap: () {
-        function();
-      },
+      onTap: function,
       child: Container(
         width: w * 0.8,
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 3),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(30),
           ),
           border: Border.all(width: 3, color: Colors.white),

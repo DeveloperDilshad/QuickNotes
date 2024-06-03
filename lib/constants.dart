@@ -10,3 +10,9 @@ const kScreenBg = BoxDecoration(
 
 const kButtonText =
     TextStyle(fontWeight: FontWeight.bold, fontSize: 32, color: Colors.white);
+
+const kTextField = BoxDecoration(
+    borderRadius: BorderRadius.all(
+      Radius.circular(10),
+    ),
+    color: Colors.black26);

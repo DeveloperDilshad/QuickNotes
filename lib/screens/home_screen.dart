@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quicknotes/components.dart';
 import 'package:quicknotes/constants.dart';
+import 'package:quicknotes/screens/add_notes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -34,7 +35,16 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: h * 0.025,
               ),
-              NoteButton(label: "Add Notes", function: () {}),
+              NoteButton(
+                  label: "Add Notes",
+                  function: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddNotesScreen(),
+                      ),
+                    );
+                  }),
             ],
           ),
         ),
