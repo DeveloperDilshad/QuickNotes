@@ -61,3 +61,73 @@ class NoteButton extends StatelessWidget {
     );
   }
 }
+
+class NoteTile extends StatelessWidget {
+  final String title;
+  final String note;
+  final String date;
+  const NoteTile(
+      {super.key, required this.title, required this.note, required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10,
+      ),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 3,
+              offset: const Offset(0, 7),
+            )
+          ]),
+      child: ListTile(
+        onTap: () {},
+        contentPadding: const EdgeInsets.all(3),
+        title: Text(
+          title,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+              color: Color(0xff00114f),
+              fontWeight: FontWeight.bold,
+              fontSize: 28),
+        ),
+        subtitle: Text(
+          note,
+          style: const TextStyle(color: Color(0xff00114f), fontSize: 24),
+        ),
+        textColor: Colors.white,
+        trailing: Column(
+          children: [
+            Text(
+              '${date.substring(5, 11)} ${date.substring(0, 3)}',
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff00114f),
+              ),
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            Text(
+              date.substring(17),
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff00114f),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

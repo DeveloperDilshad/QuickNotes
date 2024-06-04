@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quicknotes/components.dart';
 import 'package:quicknotes/constants.dart';
 import 'package:quicknotes/screens/add_notes_screen.dart';
+import 'package:quicknotes/screens/read_notes_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -19,7 +21,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              NoteTitle(),
+              const NoteTitle(),
               SizedBox(
                 height: h * 0.045,
               ),
@@ -31,7 +33,19 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: h * 0.08,
               ),
-              NoteButton(label: "Read Notes", function: () {}),
+              NoteButton(
+                  label: "Read Notes",
+                  function: () async {
+                    await db.collection('Notes').get().then((snapshot) {
+                      List<QueryDocumentSnapshot> docList = snapshot.docs;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ReadNotesSreen(docs: docList),
+                        ),
+                      );
+                    });
+                  }),
               SizedBox(
                 height: h * 0.025,
               ),
@@ -41,7 +55,7 @@ class HomeScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddNotesScreen(),
+                        builder: (context) => const AddNotesScreen(),
                       ),
                     );
                   }),

@@ -99,12 +99,12 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
             ),
             NoteButton(
                 label: 'Save',
-                function: () {
+                function: () async {
                   if (titleController.text.isEmpty ||
                       notesController.text.isEmpty) {
                     print('Fill the fields');
                   } else {
-                    db
+                    await db
                         .collection('Notes')
                         .add({
                           'Title': titleController.text,
