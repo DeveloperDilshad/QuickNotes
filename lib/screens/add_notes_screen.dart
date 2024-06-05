@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +15,14 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
   final titleController = TextEditingController();
   final notesController = TextEditingController();
   final db = FirebaseFirestore.instance;
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    notesController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -102,23 +108,20 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
                 function: () async {
                   if (titleController.text.isEmpty ||
                       notesController.text.isEmpty) {
-                    print('Fill the fields');
+                    showEmptyAlert(context);
                   } else {
-                    await db
-                        .collection('Notes')
-                        .add({
-                          'Title': titleController.text,
-                          'Notes': notesController.text,
-                          'Date': DateFormat.yMMMEd().add_jm().format(
-                                DateTime.now(),
-                              ),
-                        })
-                        .then(
-                          (value) => print('Entry added succesfully'),
-                        )
-                        .catchError(
-                          (error) => print('Entry not added due to : $error'),
-                        );
+                    await db.collection('Notes').add({
+                      'Title': titleController.text,
+                      'Notes': notesController.text,
+                      'Date': DateFormat.yMMMEd().add_jm().format(
+                            DateTime.now(),
+                          ),
+                    }).then((value) {
+                      showFirebaseAllert(context);
+                      Navigator.pop(context);
+                    }).catchError(
+                      (error) => showErrorAlert(context),
+                    );
 
                     titleController.clear();
                     notesController.clear();
@@ -128,5 +131,62 @@ class _AddNotesScreenState extends State<AddNotesScreen> {
         ),
       ),
     );
+  }
+
+  showFirebaseAllert(BuildContext context) {
+    Widget okButton = TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: const Text('OK'),
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text('Data Upload status'),
+      content: const Text('Entry added succesfully'),
+      actions: [okButton],
+    );
+    showDialog(
+        context: context,
+        builder: (context) {
+          return alert;
+        });
+  }
+
+  showErrorAlert(BuildContext context) {
+    Widget okButton = TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: const Text('OK'),
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text('Something went wrong'),
+      content: const Text('Entry not added succesfully due to an error'),
+      actions: [okButton],
+    );
+    showDialog(
+        context: context,
+        builder: (context) {
+          return alert;
+        });
+  }
+
+  showEmptyAlert(BuildContext context) {
+    Widget okButton = TextButton(
+      onPressed: () {
+        Navigator.pop(context);
+      },
+      child: const Text('OK'),
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text('Field is empty'),
+      content: const Text('Please fill all the fields'),
+      actions: [okButton],
+    );
+    showDialog(
+        context: context,
+        builder: (context) {
+          return alert;
+        });
   }
 }

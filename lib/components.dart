@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quicknotes/constants.dart';
+import 'package:quicknotes/screens/read_notes_sreen.dart';
 
 class NoteTitle extends StatelessWidget {
   const NoteTitle({super.key});
@@ -89,7 +90,18 @@ class NoteTile extends StatelessWidget {
             )
           ]),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReadSingleNote(
+                title: title,
+                date: date,
+                note: note,
+              ),
+            ),
+          );
+        },
         contentPadding: const EdgeInsets.all(3),
         title: Text(
           title,
@@ -100,32 +112,38 @@ class NoteTile extends StatelessWidget {
               fontSize: 28),
         ),
         subtitle: Text(
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
           note,
           style: const TextStyle(color: Color(0xff00114f), fontSize: 24),
         ),
         textColor: Colors.white,
-        trailing: Column(
-          children: [
-            Text(
-              '${date.substring(5, 11)} ${date.substring(0, 3)}',
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff00114f),
+        trailing: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${date.substring(5, 11)} ${date.substring(0, 3)}',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff00114f),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 3,
-            ),
-            Text(
-              date.substring(17),
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Color(0xff00114f),
+              const SizedBox(
+                height: 3,
               ),
-            ),
-          ],
+              Text(
+                date.substring(17).trim(),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff00114f),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
